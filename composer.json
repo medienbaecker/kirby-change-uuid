@@ -1,0 +1,26 @@
+{
+	"name": "medienbaecker/kirby-change-uuid",
+	"description": "Change UUIDs of pages, files and users from the Kirby Panel",
+	"license": "MIT",
+	"type": "kirby-plugin",
+	"authors": [
+		{
+			"name": "Thomas Günther"
+		}
+	],
+	"require": {
+		"getkirby/composer-installer": "^1.2"
+	},
+	"config": {
+		"allow-plugins": {
+			"getkirby/composer-installer": true
+		}
+	},
+	"archive": {
+		"exclude": [
+			".DS_Store",
+			".gitattributes",
+			".gitignore"
+		]
+	}
+}

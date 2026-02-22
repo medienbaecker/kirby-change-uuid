@@ -1,0 +1,4 @@
+{
+	"label": "Change UUID",
+	"warning": "Existing references to this UUID will break after the change!"
+}
