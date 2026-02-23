@@ -1,4 +1,5 @@
 {
-	"label": "UUID ändern",
-	"warning": "Bestehende Verweise auf diese UUID werden nach der Änderung nicht mehr funktionieren!"
+  "label": "UUID ändern",
+  "warning": "Bestehende Verweise auf diese UUID werden nach der Änderung nicht mehr funktionieren!",
+  "permission": "Die UUID kann nicht geändert werden"
 }

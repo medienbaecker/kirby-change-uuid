@@ -1,4 +1,5 @@
 {
-	"label": "Change UUID",
-	"warning": "Existing references to this UUID will break after the change!"
+  "label": "Change UUID",
+  "warning": "Existing references to this UUID will break after the change!",
+  "permission": "You are not allowed to change the UUID"
 }

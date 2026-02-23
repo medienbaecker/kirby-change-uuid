@@ -10,6 +10,9 @@ $pick = fn(array $array, array $keys) =>
 array_intersect_key($array, array_flip($keys));
 
 Kirby::plugin('medienbaecker/change-uuid', [
+	'options' => [
+		'defaultPermission' => true,
+	],
 	'translations' => A::keyBy(
 		A::map(
 			Dir::read(__DIR__ . '/translations'),

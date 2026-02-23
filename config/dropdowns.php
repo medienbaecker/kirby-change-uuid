@@ -2,10 +2,11 @@
 
 use Kirby\Cms\Find;
 
-$item = fn ($url) => [
-	'icon'   => 'key',
-	'text'   => t('medienbaecker.change-uuid.label'),
-	'dialog' => $url . '/changeUuid',
+$item = fn($model) => [
+	'icon'     => 'key',
+	'text'     => t('medienbaecker.change-uuid.label'),
+	'dialog'   => $model->panel()->url(true) . '/changeUuid',
+	'disabled' => !$model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', true)),
 ];
 
 $append = function (array $items, array $newItem) {
@@ -25,7 +26,7 @@ return [
 			foreach ($items as $key => $value) {
 				$result[$key] = $value;
 				if ($key === 'changeTemplate') {
-					$result['changeUuid'] = $item($page->panel()->url(true));
+					$result['changeUuid'] = $item($page);
 				}
 			}
 
@@ -36,14 +37,14 @@ return [
 		'pattern' => '(pages/[^/]+)/files/(:any)',
 		'options' => function (string $parent, string $filename) use ($item, $append) {
 			$file = Find::file($parent, $filename);
-			return $append($file->panel()->dropdown(), $item($file->panel()->url(true)));
+			return $append($file->panel()->dropdown(), $item($file));
 		}
 	],
 	'site.file' => [
 		'pattern' => '(site)/files/(:any)',
 		'options' => function (string $parent, string $filename) use ($item, $append) {
 			$file = Find::file($parent, $filename);
-			return $append($file->panel()->dropdown(), $item($file->panel()->url(true)));
+			return $append($file->panel()->dropdown(), $item($file));
 		}
 	],
 
@@ -52,14 +53,14 @@ return [
 		'pattern' => 'users/(:any)',
 		'options' => function (string $id) use ($item, $append) {
 			$user = Find::user($id);
-			return $append($user->panel()->dropdown(), $item($user->panel()->url(true)));
+			return $append($user->panel()->dropdown(), $item($user));
 		}
 	],
 	'user.file' => [
 		'pattern' => '(users/[^/]+)/files/(:any)',
 		'options' => function (string $parent, string $filename) use ($item, $append) {
 			$file = Find::file($parent, $filename);
-			return $append($file->panel()->dropdown(), $item($file->panel()->url(true)));
+			return $append($file->panel()->dropdown(), $item($file));
 		}
 	],
 
@@ -68,14 +69,14 @@ return [
 		'pattern' => '(account)',
 		'options' => function (string $id) use ($item, $append) {
 			$user = Find::user($id);
-			return $append($user->panel()->dropdown(), $item($user->panel()->url(true)));
+			return $append($user->panel()->dropdown(), $item($user));
 		}
 	],
 	'account.file' => [
 		'pattern' => '(account)/files/(:any)',
 		'options' => function (string $parent, string $filename) use ($item, $append) {
 			$file = Find::file($parent, $filename);
-			return $append($file->panel()->dropdown(), $item($file->panel()->url(true)));
+			return $append($file->panel()->dropdown(), $item($file));
 		}
 	],
 ];
