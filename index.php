@@ -11,7 +11,7 @@ array_intersect_key($array, array_flip($keys));
 
 Kirby::plugin('medienbaecker/change-uuid', [
 	'options' => [
-		'defaultPermission' => true,
+		'defaultPermission' => false,
 	],
 	'translations' => A::keyBy(
 		A::map(

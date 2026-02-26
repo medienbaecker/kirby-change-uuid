@@ -10,7 +10,7 @@ return function (string $scheme, callable $findModel) {
 		'load' => function (string ...$args) use ($scheme, $findModel) {
 			$model = $findModel(...$args);
 
-			if ($model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', true)) === false) {
+			if ($model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', false)) === false) {
 				throw new PermissionException(I18n::translate('medienbaecker.change-uuid.permission'));
 			}
 
@@ -47,7 +47,7 @@ return function (string $scheme, callable $findModel) {
 		'submit' => function (string ...$args) use ($findModel) {
 			$model = $findModel(...$args);
 
-			if ($model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', true)) === false) {
+			if ($model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', false)) === false) {
 				throw new PermissionException(I18n::translate('medienbaecker.change-uuid.permission'));
 			}
 

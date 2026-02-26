@@ -6,7 +6,7 @@ $item = fn($model) => [
 	'icon'     => 'key',
 	'text'     => t('medienbaecker.change-uuid.label'),
 	'dialog'   => $model->panel()->url(true) . '/changeUuid',
-	'disabled' => !$model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', true)),
+	'disabled' => !$model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', false)),
 ];
 
 $append = function (array $items, array $newItem) {

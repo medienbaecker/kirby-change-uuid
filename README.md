@@ -22,14 +22,32 @@ Download and extract this repository to `/site/plugins/kirby-change-uuid`.
 
 ## Permissions
 
+By default, UUID changes are disabled for all users. You can enable them per user role, per blueprint, or globally.
+
+### Per user role
+
+Enable UUID changes for an entire role:
+
+```yaml
+# site/blueprints/users/admin.yml
+permissions:
+  pages:
+    changeUuid: true
+  files:
+    changeUuid: true
+```
+
+> [!NOTE]
+> The `changeUuid` permission must be set explicitly. Setting `pages: true` or `"*": true` won't affect it because Kirby's wildcard only covers core permissions, not ones added by plugins.
+
 ### Per blueprint
 
-Disable UUID changes for a specific page type:
+Enable UUID changes for a specific page type:
 
 ```yaml
 # site/blueprints/pages/default.yml
 options:
-  changeUuid: false
+  changeUuid: true
 ```
 
 Or control it per user role:
@@ -41,27 +59,18 @@ options:
     "*": false
 ```
 
-### Per user role
-
-Restrict UUID changes for an entire role across all pages:
-
-```yaml
-# site/blueprints/users/editor.yml
-permissions:
-  pages:
-    changeUuid: false
-```
-
 ### Global default
 
-Change the default for all pages, files and users that don't specify a `changeUuid` option:
+Enable UUID changes for all pages, files and users by default:
 
 ```php
 // site/config/config.php
 return [
-    'medienbaecker.change-uuid.defaultPermission' => false,
+    'medienbaecker.change-uuid.defaultPermission' => true,
 ];
 ```
+
+After enabling it globally, you can still disable it for specific user roles or blueprints as shown above.
 
 ## License
 
