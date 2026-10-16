@@ -1,12 +1,14 @@
 # Kirby Change UUID
 
-Change UUIDs of pages, files and users directly from the [Kirby](https://getkirby.com/) Panel.
+Change UUIDs of pages and files directly from the [Kirby](https://getkirby.com/) Panel.
 
 <img width="1070" height="850" alt="Image" src="https://github.com/user-attachments/assets/b16e3aea-33f3-4cad-b18e-d5ba352284fb" />
 
 ## Requirements
 
-- Kirby 5+
+- Kirby 6+
+
+For Kirby 5, use version 1.x from the `main` branch.
 
 ## Installation
 
@@ -22,23 +24,19 @@ Download and extract this repository to `/site/plugins/kirby-change-uuid`.
 
 ## Permissions
 
-By default, UUID changes are disabled for all users. You can enable them per user role, per blueprint, or globally.
+You can enable UUID changes per user role or per blueprint. Users with the built-in `admin` role, and roles with `"*": true`, can change UUIDs by default.
 
 ### Per user role
 
-Enable UUID changes for an entire role:
-
 ```yaml
-# site/blueprints/users/admin.yml
+# site/blueprints/users/editor.yml
 permissions:
-  pages:
-    changeUuid: true
-  files:
-    changeUuid: true
+  medienbaecker.change-uuid:
+    pages: true
+    files: true
 ```
 
-> [!NOTE]
-> The `changeUuid` permission must be set explicitly. Setting `pages: true` or `"*": true` won't affect it because Kirby's wildcard only covers core permissions, not ones added by plugins.
+`medienbaecker.change-uuid: true` enables both. To turn it off for admins, set it to `false` in `site/blueprints/users/admin.yml`.
 
 ### Per blueprint
 
@@ -55,22 +53,41 @@ Or control it per user role:
 ```yaml
 options:
   changeUuid:
-    admin: true
+    editor: true
     "*": false
 ```
 
-### Global default
+Blueprint options win over role permissions.
 
-Enable UUID changes for all pages, files and users by default:
+## Users
 
-```php
-// site/config/config.php
-return [
-    'medienbaecker.change-uuid.defaultPermission' => true,
-];
-```
+Kirby always uses the user ID as a user's UUID, so it can't be changed. You can change the UUIDs of user files.
 
-After enabling it globally, you can still disable it for specific user roles or blueprints as shown above.
+## Upgrading from 1.x
+
+- Move the role permissions to the plugin's own category:
+
+  ```yaml
+  # 1.x
+  permissions:
+    pages:
+      changeUuid: true
+    files:
+      changeUuid: true
+
+  # 6.x
+  permissions:
+    medienbaecker.change-uuid:
+      pages: true
+      files: true
+  ```
+
+  With `debug` on, a role blueprint that still uses the 1.x syntax throws an error on every Panel request, for every user.
+
+- Admins can now change UUIDs by default.
+- The `medienbaecker.change-uuid.defaultPermission` option is gone. Enable the permission per role instead.
+- Blueprint `options: changeUuid` work as before.
+- The user and account dropdowns no longer have a "Change UUID" item. It never changed anything, because Kirby always uses the user ID as a user's UUID.
 
 ## License
 

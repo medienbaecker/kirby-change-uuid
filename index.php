@@ -10,8 +10,9 @@ $pick = fn(array $array, array $keys) =>
 array_intersect_key($array, array_flip($keys));
 
 Kirby::plugin('medienbaecker/change-uuid', [
-	'options' => [
-		'defaultPermission' => false,
+	'permissions' => [
+		'pages' => false,
+		'files' => false,
 	],
 	'translations' => A::keyBy(
 		A::map(
@@ -41,8 +42,8 @@ Kirby::plugin('medienbaecker/change-uuid', [
 			$dialogs   = require __DIR__ . '/config/dialogs.php';
 
 			return [
-				'dropdowns' => $pick($dropdowns, ['user', 'user.file']),
-				'dialogs'   => $pick($dialogs, ['user.changeUuid', 'user.file.changeUuid']),
+				'dropdowns' => $pick($dropdowns, ['user.file']),
+				'dialogs'   => $pick($dialogs, ['user.file.changeUuid']),
 			];
 		},
 		'account' => function () use ($pick) {
@@ -50,8 +51,8 @@ Kirby::plugin('medienbaecker/change-uuid', [
 			$dialogs   = require __DIR__ . '/config/dialogs.php';
 
 			return [
-				'dropdowns' => $pick($dropdowns, ['account', 'account.file']),
-				'dialogs'   => $pick($dialogs, ['account.changeUuid', 'account.file.changeUuid']),
+				'dropdowns' => $pick($dropdowns, ['account.file']),
+				'dialogs'   => $pick($dialogs, ['account.file.changeUuid']),
 			];
 		},
 	],

@@ -20,20 +20,12 @@ return [
 	],
 
 	// Users area
-	'user.changeUuid' => [
-		'pattern' => 'users/(:any)/changeUuid',
-		...$dialog('user', fn(string $id) => Find::user($id)),
-	],
 	'user.file.changeUuid' => [
 		'pattern' => '(users/[^/]+)/files/(:any)/changeUuid',
 		...$dialog('file', fn(string $parent, string $filename) => Find::file($parent, $filename)),
 	],
 
 	// Account area
-	'account.changeUuid' => [
-		'pattern' => '(account)/changeUuid',
-		...$dialog('user', fn(string $id) => Find::user($id)),
-	],
 	'account.file.changeUuid' => [
 		'pattern' => '(account)/files/(:any)/changeUuid',
 		...$dialog('file', fn(string $parent, string $filename) => Find::file($parent, $filename)),

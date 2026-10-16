@@ -5,12 +5,14 @@ use Kirby\Exception\PermissionException;
 use Kirby\Toolkit\I18n;
 use Kirby\Uuid\Uuid;
 
-return function (string $scheme, callable $findModel) {
+$can = require __DIR__ . '/can.php';
+
+return function (string $scheme, callable $findModel) use ($can) {
 	return [
-		'load' => function (string ...$args) use ($scheme, $findModel) {
+		'load' => function (string ...$args) use ($scheme, $findModel, $can) {
 			$model = $findModel(...$args);
 
-			if ($model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', false)) === false) {
+			if ($can($model) === false) {
 				throw new PermissionException(I18n::translate('medienbaecker.change-uuid.permission'));
 			}
 
@@ -44,10 +46,10 @@ return function (string $scheme, callable $findModel) {
 				],
 			];
 		},
-		'submit' => function (string ...$args) use ($findModel) {
+		'submit' => function (string ...$args) use ($findModel, $can) {
 			$model = $findModel(...$args);
 
-			if ($model->permissions()->can('changeUuid', option('medienbaecker.change-uuid.defaultPermission', false)) === false) {
+			if ($can($model) === false) {
 				throw new PermissionException(I18n::translate('medienbaecker.change-uuid.permission'));
 			}
 
