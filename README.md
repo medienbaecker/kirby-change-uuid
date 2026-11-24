@@ -8,7 +8,7 @@ Change UUIDs of pages and files directly from the [Kirby](https://getkirby.com/)
 
 - Kirby 6+
 
-For Kirby 5, use version 1.x from the `main` branch.
+For Kirby 5, use version 1.x from the `v5` branch.
 
 ## Installation
 
