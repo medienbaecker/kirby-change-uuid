@@ -1,6 +1,7 @@
 <?php
 
 use Kirby\Cms\App;
+use Kirby\Cms\Language;
 use Kirby\Exception\PermissionException;
 use Kirby\Toolkit\I18n;
 use Kirby\Uuid\Uuid;
@@ -60,8 +61,14 @@ return function (string $scheme, callable $findModel) use ($can) {
 				$newUuid = $request->get('fallback', Uuid::generate());
 			}
 
+			$language = Language::ensure('default');
+
+			if ($model->version('changes')->exists($language) === true) {
+				$model->version('changes')->update(['uuid' => $newUuid], $language);
+			}
+
 			$model->uuid()->clear();
-			$model->update(['uuid' => $newUuid]);
+			$model->update(['uuid' => $newUuid], $language->code());
 			App::instance()->cache('uuid')->flush();
 
 			return [
