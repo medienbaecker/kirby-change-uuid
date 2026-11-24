@@ -5,9 +5,21 @@ use Kirby\Data\Json;
 use Kirby\Filesystem\Dir;
 use Kirby\Filesystem\F;
 use Kirby\Toolkit\A;
+use Kirby\Uuid\Uuids;
 
-$pick = fn(array $array, array $keys) =>
-array_intersect_key($array, array_flip($keys));
+$area = fn(array $keys) => function () use ($keys) {
+	if (Uuids::enabled() === false) {
+		return [];
+	}
+
+	$dropdowns = require __DIR__ . '/config/dropdowns.php';
+	$dialogs   = require __DIR__ . '/config/dialogs.php';
+
+	return [
+		'dropdowns' => array_intersect_key($dropdowns, array_flip($keys)),
+		'dialogs'   => array_intersect_key($dialogs, array_flip(array_map(fn($key) => $key . '.changeUuid', $keys))),
+	];
+};
 
 Kirby::plugin('medienbaecker/change-uuid', [
 	'permissions' => [
@@ -28,32 +40,8 @@ Kirby::plugin('medienbaecker/change-uuid', [
 		'lang'
 	),
 	'areas' => [
-		'site' => function () use ($pick) {
-			$dropdowns = require __DIR__ . '/config/dropdowns.php';
-			$dialogs   = require __DIR__ . '/config/dialogs.php';
-
-			return [
-				'dropdowns' => $pick($dropdowns, ['page', 'page.file', 'site.file']),
-				'dialogs'   => $pick($dialogs, ['page.changeUuid', 'page.file.changeUuid', 'site.file.changeUuid']),
-			];
-		},
-		'users' => function () use ($pick) {
-			$dropdowns = require __DIR__ . '/config/dropdowns.php';
-			$dialogs   = require __DIR__ . '/config/dialogs.php';
-
-			return [
-				'dropdowns' => $pick($dropdowns, ['user.file']),
-				'dialogs'   => $pick($dialogs, ['user.file.changeUuid']),
-			];
-		},
-		'account' => function () use ($pick) {
-			$dropdowns = require __DIR__ . '/config/dropdowns.php';
-			$dialogs   = require __DIR__ . '/config/dialogs.php';
-
-			return [
-				'dropdowns' => $pick($dropdowns, ['account.file']),
-				'dialogs'   => $pick($dialogs, ['account.file.changeUuid']),
-			];
-		},
+		'site'    => $area(['page', 'page.file', 'site.file']),
+		'users'   => $area(['user.file']),
+		'account' => $area(['account.file']),
 	],
 ]);
