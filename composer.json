@@ -3,7 +3,7 @@
   "description": "Change UUIDs of pages and files from the Kirby Panel",
   "license": "MIT",
   "type": "kirby-plugin",
-  "version": "6.0.0-rc.1",
+  "version": "6.0.0",
   "authors": [
     {
       "name": "Thomas Günther"
