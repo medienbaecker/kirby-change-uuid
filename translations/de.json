@@ -1,5 +1,6 @@
 {
   "label": "UUID ändern",
   "warning": "Bestehende Verweise auf diese UUID werden nach der Änderung nicht mehr funktionieren!",
-  "permission": "Die UUID kann nicht geändert werden"
+  "permission": "Die UUID kann nicht geändert werden",
+  "duplicate": "Diese UUID wird bereits verwendet"
 }

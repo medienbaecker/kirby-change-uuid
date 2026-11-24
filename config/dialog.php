@@ -2,6 +2,7 @@
 
 use Kirby\Cms\App;
 use Kirby\Cms\Language;
+use Kirby\Exception\DuplicateException;
 use Kirby\Exception\PermissionException;
 use Kirby\Toolkit\I18n;
 use Kirby\Uuid\Uuid;
@@ -47,7 +48,7 @@ return function (string $scheme, callable $findModel) use ($can) {
 				],
 			];
 		},
-		'submit' => function (string ...$args) use ($findModel, $can) {
+		'submit' => function (string ...$args) use ($scheme, $findModel, $can) {
 			$model = $findModel(...$args);
 
 			if ($can($model) === false) {
@@ -59,6 +60,12 @@ return function (string $scheme, callable $findModel) use ($can) {
 
 			if (empty($newUuid)) {
 				$newUuid = $request->get('fallback', Uuid::generate());
+			}
+
+			$existing = Uuid::from($scheme . '://' . $newUuid)->model();
+
+			if ($existing !== null && $existing->is($model) === false) {
+				throw new DuplicateException(I18n::translate('medienbaecker.change-uuid.duplicate'));
 			}
 
 			$language = Language::ensure('default');
