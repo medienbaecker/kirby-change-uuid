@@ -3,6 +3,7 @@
 use Kirby\Cms\App;
 use Kirby\Cms\Language;
 use Kirby\Exception\DuplicateException;
+use Kirby\Exception\InvalidArgumentException;
 use Kirby\Exception\PermissionException;
 use Kirby\Toolkit\I18n;
 use Kirby\Uuid\Uuid;
@@ -56,10 +57,14 @@ return function (string $scheme, callable $findModel) use ($can) {
 			}
 
 			$request = App::instance()->request();
-			$newUuid = trim($request->get('uuid', ''));
+			$newUuid = trim(preg_replace('!^\s*' . $scheme . '://!', '', $request->get('uuid', '')));
 
 			if (empty($newUuid)) {
 				$newUuid = $request->get('fallback', Uuid::generate());
+			}
+
+			if (preg_match('![/#?]|[^\x00-\x7F]!', $newUuid) === 1) {
+				throw new InvalidArgumentException(key: 'validation.uuid');
 			}
 
 			$existing = Uuid::from($scheme . '://' . $newUuid)->model();
